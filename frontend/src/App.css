@@ -1,0 +1,191 @@
+// frontend/src/App.jsx
+import { useState, useEffect } from 'react';
+import Header from './components/Header';
+import StatsCards from './components/StatsCards';
+import SearchBar from './components/SearchBar';
+import FilterButtons from './components/FilterButtons';
+import ListaIncidentes from './components/ListaIncidentes';
+import FormularioIncidente from './components/FormularioIncidente';
+import DetalleIncidente from './components/DetailIncidente';
+
+function App() {
+  const [incidentes, setIncidentes] = useState([]);
+  const [filteredIncidentes, setFilteredIncidentes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentFilter, setCurrentFilter] = useState('todos');
+  const [showForm, setShowForm] = useState(false);
+  const [selectedIncidente, setSelectedIncidente] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Cargar incidentes al iniciar
+  useEffect(() => {
+    cargarIncidentes();
+  }, []);
+
+  // Filtrar incidentes cuando cambian los filtros
+  useEffect(() => {
+    filtrarIncidentes();
+  }, [incidentes, searchTerm, currentFilter]);
+
+  const cargarIncidentes = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:3000/api/incidentes');
+      const data = await response.json();
+      if (data.success && data.data && data.data.length > 0) {
+        setIncidentes(data.data);
+      } else {
+        // Datos de ejemplo para mostrar
+        setIncidentes([
+          {
+            incidente_id: "I001",
+            tipo_delito: "Estafa por SMS",
+            descripcion: "Víctima recibió un SMS falso de Bancolombia indicando que su cuenta estaba bloqueada. Hizo clic en un enlace fraudulento y perdió $2.500.000",
+            victima: { nombre: "Luis Fernando Gómez", identificacion: "80223344", telefono: "3214567890" },
+            afectacion_economica: { monto_perdido: 2500000 },
+            fecha_incidente: "2026-04-08",
+            estado: "En investigación"
+          },
+          {
+            incidente_id: "I002",
+            tipo_delito: "Suplantación de identidad",
+            descripcion: "Crearon un perfil falso en Facebook usando sus fotos y contactaron a sus amigos pidiendo dinero",
+            victima: { nombre: "Ana María Rodríguez", identificacion: "52345678", telefono: "3156789012" },
+            afectacion_economica: { monto_perdido: 0 },
+            fecha_incidente: "2026-04-07",
+            estado: "Abierto"
+          },
+          {
+            incidente_id: "I003",
+            tipo_delito: "Phishing",
+            descripcion: "Recibió un correo falso de su banco solicitando actualizar sus datos",
+            victima: { nombre: "Carlos Mendoza", identificacion: "98765432", telefono: "3109876543" },
+            afectacion_economica: { monto_perdido: 3500000 },
+            fecha_incidente: "2026-04-06",
+            estado: "Abierto"
+          },
+          {
+            incidente_id: "I004",
+            tipo_delito: "Clonación de tarjeta",
+            descripcion: "Realizaron compras no reconocidas con su tarjeta de crédito",
+            victima: { nombre: "Martha López", identificacion: "11223344", telefono: "3001234567" },
+            afectacion_economica: { monto_perdido: 1250000 },
+            fecha_incidente: "2026-04-05",
+            estado: "Abierto"
+          }
+        ]);
+      }
+    } catch (error) {
+      console.error('Error cargando incidentes:', error);
+      setIncidentes([
+        {
+          incidente_id: "I001",
+          tipo_delito: "Estafa por SMS",
+          descripcion: "Víctima recibió SMS falso de Bancolombia",
+          victima: { nombre: "Luis Fernando Gómez" },
+          afectacion_economica: { monto_perdido: 2500000 },
+          fecha_incidente: "2026-04-08",
+          estado: "En investigación"
+        },
+        {
+          incidente_id: "I002",
+          tipo_delito: "Suplantación de identidad",
+          descripcion: "Perfil falso en Facebook",
+          victima: { nombre: "Ana María Rodríguez" },
+          afectacion_economica: { monto_perdido: 0 },
+          fecha_incidente: "2026-04-07",
+          estado: "Abierto"
+        }
+      ]);
+    }
+    setLoading(false);
+  };
+
+  const filtrarIncidentes = () => {
+    let filtrados = [...incidentes];
+    
+    // Filtrar por estado
+    if (currentFilter !== 'todos') {
+      filtrados = filtrados.filter(i => i.estado === currentFilter);
+    }
+    
+    // Filtrar por búsqueda
+    if (searchTerm.trim()) {
+      filtrados = filtrados.filter(i => 
+        (i.victima?.nombre || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (i.tipo_delito || '').toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    setFilteredIncidentes(filtrados);
+  };
+
+  const handleSaveIncidente = async (nuevoIncidente) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/incidentes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevoIncidente)
+      });
+      if (response.ok) {
+        cargarIncidentes();
+      } else {
+        setIncidentes([...incidentes, nuevoIncidente]);
+      }
+    } catch (error) {
+      setIncidentes([...incidentes, nuevoIncidente]);
+    }
+    setShowForm(false);
+  };
+
+  // Calcular estadísticas
+  const totalCasos = incidentes.length;
+  const casosActivos = incidentes.filter(i => i.estado === 'Abierto' || i.estado === 'En investigación').length;
+  const montoTotal = incidentes.reduce((sum, i) => sum + (i.afectacion_economica?.monto_perdido || 0), 0);
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <StatsCards totalCasos={totalCasos} casosActivos={casosActivos} montoTotal={montoTotal} />
+      <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <FilterButtons currentFilter={currentFilter} onFilterChange={setCurrentFilter} />
+      
+      {loading ? (
+        <div className="flex justify-center items-center py-16">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-green-700 mx-auto mb-3"></div>
+            <p className="text-gray-500">Cargando incidentes...</p>
+          </div>
+        </div>
+      ) : (
+        <ListaIncidentes incidentes={filteredIncidentes} onIncidentClick={setSelectedIncidente} />
+      )}
+      
+      {/* Botón flotante */}
+      <button
+        onClick={() => setShowForm(true)}
+        className="fixed bottom-5 right-5 bg-green-700 text-white w-14 h-14 rounded-full text-3xl shadow-lg hover:bg-green-800 transition-all hover:scale-105 flex items-center justify-center z-10"
+      >
+        +
+      </button>
+      
+      {/* Modal para nuevo incidente */}
+      {showForm && (
+        <FormularioIncidente 
+          onClose={() => setShowForm(false)} 
+          onSave={handleSaveIncidente}
+        />
+      )}
+      
+      {/* Modal para detalle del incidente */}
+      {selectedIncidente && (
+        <DetalleIncidente 
+          incidente={selectedIncidente}
+          onClose={() => setSelectedIncidente(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+export default App;
