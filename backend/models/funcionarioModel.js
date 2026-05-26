@@ -7,6 +7,11 @@ const funcionarioSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
+    identificacion: {
+        type: String,
+        required: true,
+        unique: true
+    },
     nombre: {
         type: String,
         required: true,
@@ -25,17 +30,21 @@ const funcionarioSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        lowercase: true,
-        trim: true
-    },
-    telefono: {
-        type: String,
-        required: true
+        lowercase: true
     },
     password: {
         type: String,
         required: true,
-        select: false  // No devolver por defecto
+        select: false
+    },
+    telefono: {
+        type: String,
+        default: ''
+    },
+    // Foto de perfil
+    foto_url: {
+        type: String,
+        default: ''
     },
     rol: {
         type: String,
@@ -46,6 +55,10 @@ const funcionarioSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    ultimo_acceso: {
+        type: Date,
+        default: null
+    },
     fecha_registro: {
         type: Date,
         default: Date.now
@@ -54,7 +67,7 @@ const funcionarioSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Crear índice para búsquedas rápidas
+// Índices
 funcionarioSchema.index({ funcionario_id: 1 });
 funcionarioSchema.index({ email: 1 });
 

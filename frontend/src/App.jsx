@@ -3,9 +3,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import Login from './components/Login';
+import Registro from './components/Registro';  // ← AGREGAR ESTA LÍNEA
 import AppContent from './AppContent';
 
-// Componente para rutas protegidas
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   
@@ -28,6 +28,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />  {/* ← AGREGAR ESTA LÍNEA */}
         <Route
           path="/*"
           element={

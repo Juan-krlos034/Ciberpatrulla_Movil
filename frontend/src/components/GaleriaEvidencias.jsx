@@ -1,22 +1,51 @@
-import React, { useState } from 'react';
+// frontend/src/components/GaleriaEvidencias.jsx
+import React, { useState, useEffect } from 'react';
 
 function GaleriaEvidencias({ evidencias = [] }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedEvidencia, setSelectedEvidencia] = useState(null);
+  const [selectedUrl, setSelectedUrl] = useState(null);
+  const [urlsValidas, setUrlsValidas] = useState([]);
 
-  const abrirModal = (evidencia) => {
-    setSelectedEvidencia(evidencia);
-    setModalOpen(true);
-  };
+  useEffect(() => {
+    // Procesar las URLs de las evidencias
+    const procesarUrls = () => {
+      const validas = [];
+      const lista = Array.isArray(evidencias) ? evidencias : [];
+      
+      for (const ev of lista) {
+        let url = null;
+        
+        if (typeof ev === 'string') {
+          url = ev;
+        } else if (ev && typeof ev === 'object') {
+          url = ev.url || ev.fileUrl || ev.data;
+        }
+        
+        if (url && typeof url === 'string' && url !== '') {
+          // Si es URL relativa, completarla
+          if (url.startsWith('/uploads')) {
+            url = `http://localhost:3000${url}`;
+          }
+          // Solo URLs válidas (no temporales)
+          if (url.startsWith('http') && !url.includes('temp_') && !url.includes('blob:')) {
+            validas.push(url);
+          }
+        }
+      }
+      
+      console.log('📸 URLs de evidencias válidas:', validas);
+      setUrlsValidas(validas);
+    };
+    
+    procesarUrls();
+  }, [evidencias]);
 
-  const esVideo = (url) => {
-    return url?.match(/\.(mp4|mov|avi)$/i);
-  };
-
-  if (evidencias.length === 0) {
+  if (urlsValidas.length === 0) {
     return (
-      <div className="bg-gray-50 rounded-lg p-4 text-center text-gray-500">
-        📷 No hay evidencias adjuntas
+      <div className="bg-gray-50 rounded-lg p-6 text-center">
+        <span className="text-5xl">📷</span>
+        <p className="text-gray-500 mt-2">No hay evidencias adjuntas</p>
+        <p className="text-xs text-gray-400">Las imágenes se mostrarán aquí</p>
       </div>
     );
   }
@@ -24,56 +53,55 @@ function GaleriaEvidencias({ evidencias = [] }) {
   return (
     <>
       <div className="grid grid-cols-3 gap-2">
-        {evidencias.slice(0, 6).map((ev, index) => (
+        {urlsValidas.slice(0, 6).map((url, idx) => (
           <div
-            key={index}
-            onClick={() => abrirModal(ev)}
-            className="aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition"
+            key={idx}
+            onClick={() => {
+              setSelectedUrl(url);
+              setModalOpen(true);
+            }}
+            className="aspect-square bg-gray-100 rounded-xl overflow-hidden cursor-pointer hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            {esVideo(ev.url) ? (
-              <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white">
-                <span className="text-3xl">🎥</span>
-              </div>
-            ) : (
-              <img src={ev.url} alt="Evidencia" className="w-full h-full object-cover" />
-            )}
+            <img
+              src={url}
+              alt={`Evidencia ${idx + 1}`}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                console.error('❌ Error cargando imagen:', url);
+                e.target.src = 'https://placehold.co/400x400?text=Error';
+              }}
+            />
           </div>
         ))}
       </div>
 
-      {evidencias.length > 6 && (
-        <p className="text-sm text-gray-500 mt-2">
-          +{evidencias.length - 6} evidencias más
+      {urlsValidas.length > 6 && (
+        <p className="text-sm text-gray-500 mt-2 text-center">
+          +{urlsValidas.length - 6} evidencias más
         </p>
       )}
 
-      {/* Modal para ver evidencia ampliada */}
-      {modalOpen && selectedEvidencia && (
+      {/* Modal para ver imagen ampliada */}
+      {modalOpen && selectedUrl && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4"
           onClick={() => setModalOpen(false)}
         >
-          <div className="relative max-w-full max-h-full p-4">
+          <div className="relative max-w-full max-h-full">
             <button
               onClick={() => setModalOpen(false)}
-              className="absolute top-4 right-4 text-white text-3xl z-10"
+              className="absolute -top-12 right-0 text-white text-3xl hover:text-gray-300"
             >
               ✕
             </button>
-            {esVideo(selectedEvidencia.url) ? (
-              <video
-                src={selectedEvidencia.url}
-                controls
-                className="max-w-full max-h-[90vh]"
-                autoPlay
-              />
-            ) : (
-              <img
-                src={selectedEvidencia.url}
-                alt="Evidencia ampliada"
-                className="max-w-full max-h-[90vh] object-contain"
-              />
-            )}
+            <img
+              src={selectedUrl}
+              alt="Evidencia ampliada"
+              className="max-w-full max-h-[85vh] object-contain rounded-lg"
+              onError={(e) => {
+                e.target.src = 'https://placehold.co/800x600?text=No+se+pudo+cargar';
+              }}
+            />
           </div>
         </div>
       )}

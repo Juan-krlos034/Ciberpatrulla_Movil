@@ -1,36 +1,65 @@
 // frontend/src/services/api.js
 const API_URL = 'http://localhost:3000/api';
 
-// Obtener token del localStorage
-const getToken = () => localStorage.getItem('token');
+// Obtener token del localStorage - VERSIÓN CORREGIDA
+const getToken = () => {
+  const token = localStorage.getItem('token');
+  console.log('🔑 getToken() - Token existe?', token ? 'SÍ' : 'NO');
+  if (token) {
+    console.log('🔑 Token (primeros 20 chars):', token.substring(0, 20) + '...');
+  }
+  return token;
+};
 
-// Headers con autenticación
-const getHeaders = () => ({
-  'Content-Type': 'application/json',
-  'x-auth-token': getToken() || ''
-});
+// Headers con autenticación - VERSIÓN CORREGIDA
+const getHeaders = () => {
+  const token = getToken();
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+  
+  if (token) {
+    headers['x-auth-token'] = token;
+    console.log('✅ Header x-auth-token agregado a la petición');
+  } else {
+    console.warn('⚠️ No hay token disponible en los headers');
+  }
+  
+  return headers;
+};
 
 // ============ INCIDENTES ============
 
 // Obtener todos los incidentes
 export const getIncidentes = async () => {
   try {
+    console.log('📡 Haciendo GET a:', `${API_URL}/incidentes`);
+    const headers = getHeaders();
+    console.log('📡 Headers:', headers);
+    
     const response = await fetch(`${API_URL}/incidentes`, {
-      headers: getHeaders()
+      headers: headers
     });
+    
+    console.log('📡 Response status:', response.status);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
     const data = await response.json();
+    console.log('📡 Datos recibidos:', data);
     return data;
   } catch (error) {
-    console.error('Error en getIncidentes:', error);
-    return { success: false, data: [] };
+    console.error('❌ Error en getIncidentes:', error);
+    return { success: false, data: [], message: error.message };
   }
 };
 
 // Obtener incidente por ID
 export const getIncidenteById = async (id) => {
-  // Validar que el ID existe
   if (!id) {
-    console.error('getIncidenteById: ID no proporcionado');
+    console.error('❌ getIncidenteById: ID no proporcionado');
     return { success: false, message: 'ID no proporcionado', data: null };
   }
   
@@ -45,7 +74,7 @@ export const getIncidenteById = async (id) => {
     
     return await response.json();
   } catch (error) {
-    console.error('Error en getIncidenteById:', error);
+    console.error('❌ Error en getIncidenteById:', error);
     return { success: false, message: error.message, data: null };
   }
 };
@@ -58,10 +87,15 @@ export const createIncidente = async (incidente) => {
       headers: getHeaders(),
       body: JSON.stringify(incidente)
     });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
     return await response.json();
   } catch (error) {
-    console.error('Error en createIncidente:', error);
-    return { success: false };
+    console.error('❌ Error en createIncidente:', error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -73,10 +107,15 @@ export const updateIncidente = async (id, data) => {
       headers: getHeaders(),
       body: JSON.stringify(data)
     });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
     return await response.json();
   } catch (error) {
-    console.error('Error:', error);
-    return { success: false };
+    console.error('❌ Error en updateIncidente:', error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -87,10 +126,37 @@ export const deleteIncidente = async (id) => {
       method: 'DELETE',
       headers: getHeaders()
     });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
     return await response.json();
   } catch (error) {
-    console.error('Error:', error);
-    return { success: false };
+    console.error('❌ Error en deleteIncidente:', error);
+    return { success: false, message: error.message };
+  }
+};
+
+// ============ AUTENTICACIÓN ============
+
+// Registrar nuevo funcionario
+export const register = async (userData) => {
+  try {
+    const response = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+    
+    const data = await response.json();
+    console.log('📝 Registro response:', data);
+    return data;
+  } catch (error) {
+    console.error('❌ Error en register:', error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -100,10 +166,15 @@ export const getEstadisticas = async () => {
     const response = await fetch(`${API_URL}/incidentes/estadisticas`, {
       headers: getHeaders()
     });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
     return await response.json();
   } catch (error) {
-    console.error('Error:', error);
-    return { success: false, data: null };
+    console.error('❌ Error en getEstadisticas:', error);
+    return { success: false, data: null, message: error.message };
   }
 };
 
@@ -112,23 +183,46 @@ export const getEstadisticas = async () => {
 // Obtener todos los tipos de delito
 export const getTiposDelito = async () => {
   try {
+    console.log('📡 Fetching tipos de delito desde:', `${API_URL}/tipos-delito`);
+    
     const response = await fetch(`${API_URL}/tipos-delito`, {
       headers: getHeaders()
     });
+    
+    console.log('📡 Response status:', response.status);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
     const data = await response.json();
-    return data;
+    console.log('📡 Tipos de delito recibidos:', data);
+    
+    if (data && data.success && Array.isArray(data.data)) {
+      return data;
+    } else {
+      console.warn('⚠️ La respuesta no tiene la estructura esperada, usando datos de ejemplo');
+      return { 
+        success: true, 
+        data: [
+          { tipo_delito_id: "TD001", nombre: "Estafa por SMS" },
+          { tipo_delito_id: "TD002", nombre: "Suplantación de identidad" },
+          { tipo_delito_id: "TD003", nombre: "Phishing" },
+          { tipo_delito_id: "TD004", nombre: "Ciberacoso" },
+          { tipo_delito_id: "TD005", nombre: "Clonación de tarjeta" },
+          { tipo_delito_id: "TD006", nombre: "Fraude en compras online" }
+        ] 
+      };
+    }
   } catch (error) {
-    console.error('Error en getTiposDelito:', error);
-    // Datos de ejemplo para desarrollo
+    console.error('❌ Error en getTiposDelito:', error);
     return { 
       success: true, 
       data: [
         { tipo_delito_id: "TD001", nombre: "Estafa por SMS" },
         { tipo_delito_id: "TD002", nombre: "Suplantación de identidad" },
         { tipo_delito_id: "TD003", nombre: "Phishing" },
-        { tipo_delito_id: "TD004", nombre: "Ciberacoso" },
-        { tipo_delito_id: "TD005", nombre: "Clonación de tarjeta" },
-        { tipo_delito_id: "TD006", nombre: "Fraude en compras online" }
+        { tipo_delito_id: "TD004", nombre: "Ciberacoso" }
       ] 
     };
   }
@@ -152,11 +246,15 @@ export const busquedaAvanzada = async (criterios) => {
     const response = await fetch(`${API_URL}/incidentes/busqueda/avanzada?${params.toString()}`, {
       headers: getHeaders()
     });
-    const data = await response.json();
-    return data;
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    return await response.json();
   } catch (error) {
-    console.error('Error en busquedaAvanzada:', error);
-    return { success: false, data: [] };
+    console.error('❌ Error en busquedaAvanzada:', error);
+    return { success: false, data: [], message: error.message };
   }
 };
 
@@ -166,14 +264,19 @@ export const buscarIncidentes = async (termino) => {
     const response = await fetch(`${API_URL}/incidentes/buscar?q=${encodeURIComponent(termino)}`, {
       headers: getHeaders()
     });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
     return await response.json();
   } catch (error) {
-    console.error('Error en buscarIncidentes:', error);
-    return { success: false, data: [] };
+    console.error('❌ Error en buscarIncidentes:', error);
+    return { success: false, data: [], message: error.message };
   }
 };
 
-// ============ ALERTAS DE MONTOS ALTOS (NUEVO) ============
+// ============ ALERTAS DE MONTOS ALTOS ============
 
 // Obtener incidentes con montos altos (alertas)
 export const getAlertasMontosAltos = async (montoMinimo = 1000000) => {
@@ -181,10 +284,14 @@ export const getAlertasMontosAltos = async (montoMinimo = 1000000) => {
     const response = await fetch(`${API_URL}/incidentes?monto_minimo=${montoMinimo}`, {
       headers: getHeaders()
     });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
     const data = await response.json();
     
-    // Filtrar solo los que superan el monto mínimo
-    if (data.success && data.data) {
+    if (data.success && Array.isArray(data.data)) {
       const filtrados = data.data.filter(i => 
         (i.afectacion_economica?.monto_perdido || 0) >= montoMinimo
       );
@@ -192,8 +299,7 @@ export const getAlertasMontosAltos = async (montoMinimo = 1000000) => {
     }
     return data;
   } catch (error) {
-    console.error('Error en getAlertasMontosAltos:', error);
-    // Datos de ejemplo para desarrollo
+    console.error('❌ Error en getAlertasMontosAltos:', error);
     return { 
       success: true, 
       data: [
@@ -204,14 +310,6 @@ export const getAlertasMontosAltos = async (montoMinimo = 1000000) => {
           afectacion_economica: { monto_perdido: 2500000 },
           descripcion: "Estafa por SMS - Pérdida de $2.500.000",
           estado: "En investigación"
-        },
-        {
-          incidente_id: "I003",
-          tipo_delito_id: "TD003",
-          victima: { nombre: "Carlos Mendoza" },
-          afectacion_economica: { monto_perdido: 3500000 },
-          descripcion: "Phishing - Pérdida de $3.500.000",
-          estado: "Abierto"
         }
       ] 
     };
@@ -227,11 +325,14 @@ export const getIncidentesAltoMonto = getAlertasMontosAltos;
 export const exportarExcel = async () => {
   try {
     const token = getToken();
+    if (!token) {
+      throw new Error('No hay token de autenticación');
+    }
     window.open(`${API_URL}/exportar/excel?token=${token}`, '_blank');
     return { success: true };
   } catch (error) {
-    console.error('Error exportando a Excel:', error);
-    return { success: false };
+    console.error('❌ Error exportando a Excel:', error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -239,11 +340,14 @@ export const exportarExcel = async () => {
 export const exportarPDF = async () => {
   try {
     const token = getToken();
+    if (!token) {
+      throw new Error('No hay token de autenticación');
+    }
     window.open(`${API_URL}/exportar/pdf?token=${token}`, '_blank');
     return { success: true };
   } catch (error) {
-    console.error('Error exportando a PDF:', error);
-    return { success: false };
+    console.error('❌ Error exportando a PDF:', error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -251,16 +355,19 @@ export const exportarPDF = async () => {
 export const exportarIncidentes = async (filtros = {}) => {
   try {
     const token = getToken();
+    if (!token) {
+      throw new Error('No hay token de autenticación');
+    }
     const params = new URLSearchParams(filtros).toString();
     window.open(`${API_URL}/exportar/incidentes?token=${token}&${params}`, '_blank');
     return { success: true };
   } catch (error) {
-    console.error('Error exportando:', error);
-    return { success: false };
+    console.error('❌ Error exportando incidentes:', error);
+    return { success: false, message: error.message };
   }
 };
 
-// ============ OBJETOS DE SERVICIO (COMPATIBILIDAD) ============
+// ============ OBJETOS DE SERVICIO ============
 
 export const incidenteService = {
   getAll: getIncidentes,
@@ -272,8 +379,13 @@ export const incidenteService = {
   buscar: buscarIncidentes,
   busquedaAvanzada: busquedaAvanzada,
   getOffline: () => {
-    const offline = localStorage.getItem('offline_incidentes');
-    return offline ? JSON.parse(offline) : [];
+    try {
+      const offline = localStorage.getItem('offline_incidentes');
+      return offline ? JSON.parse(offline) : [];
+    } catch (error) {
+      console.error('Error leyendo offline_incidentes:', error);
+      return [];
+    }
   }
 };
 
@@ -281,11 +393,11 @@ export const tiposDelitoService = {
   getAll: getTiposDelito,
   getById: async (id) => {
     const result = await getTiposDelito();
-    if (result.success && result.data) {
+    if (result.success && Array.isArray(result.data)) {
       const encontrado = result.data.find(t => t.tipo_delito_id === id);
-      return { success: true, data: encontrado };
+      return { success: true, data: encontrado || null };
     }
-    return { success: false };
+    return { success: false, data: null };
   }
 };
 
@@ -300,7 +412,8 @@ export const alertasService = {
   getAlertasMontosAltos: getAlertasMontosAltos
 };
 
-// Exportación por defecto
+// ============ EXPORTACIÓN POR DEFECTO ============
+
 export default {
   getIncidentes,
   getIncidenteById,

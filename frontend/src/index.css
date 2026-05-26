@@ -3,284 +3,288 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Colores institucionales Policía Nacional */
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
 :root {
-    --policia-verde: #1B5E20;
-    --policia-verde-claro: #4CAF50;
-    --policia-verde-oscuro: #0D3B0F;
-    --policia-azul: #0D47A1;
-    --policia-azul-claro: #1976D2;
-    --policia-gris: #F5F5F6;
-    --policia-blanco: #FFFFFF;
-    --policia-negro: #212121;
-    --policia-rojo: #C62828;
-    --policia-rojo-claro: #EF5350;
-    --policia-amarillo: #F9A825;
+  --neon-green: #4CAF50;
+  --neon-green-dark: #1B5E20;
+  --neon-gold: #F9A825;
+  --dark-bg: #0a0f0a;
+  --grid-color: rgba(76, 175, 80, 0.1);
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-    min-height: 100vh;
-    color: var(--policia-negro);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: #0a0f0a;
+  min-height: 100vh;
 }
 
-/* Animaciones */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* ============ FONDO FUTURISTA ============ */
+.futuristic-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, #0a0f0a 0%, #0d1a0d 50%, #0a0f0a 100%);
+  overflow: hidden;
 }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Grilla futurista */
+.futuristic-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
 }
 
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* Círculos de neón */
+.futuristic-bg .circle-1 {
+  position: absolute;
+  top: 10%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(76, 175, 80, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 8s ease-in-out infinite;
+}
+
+.futuristic-bg .circle-2 {
+  position: absolute;
+  bottom: 10%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(249, 168, 37, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 10s ease-in-out infinite reverse;
+}
+
+.futuristic-bg .circle-3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(76, 175, 80, 0.05) 0%, transparent 80%);
+  border-radius: 50%;
+  animation: rotate 30s linear infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
-@keyframes slideIn {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
-@keyframes slideInRight {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+/* Líneas de datos futuristas */
+.futuristic-bg .data-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+  animation: dataFlow 3s linear infinite;
 }
 
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.futuristic-bg .data-line-1 {
+  top: 20%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  animation-delay: 0s;
 }
 
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+.futuristic-bg .data-line-2 {
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  animation-delay: 1.5s;
 }
 
-/* Clases de animación */
+.futuristic-bg .data-line-3 {
+  top: 80%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  animation-delay: 0.8s;
+}
+
+@keyframes dataFlow {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Partículas */
+.futuristic-bg .particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--neon-green);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat 10s linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) scale(0);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100vh) scale(1);
+  }
+}
+
+/* ============ ANIMACIONES ============ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); }
+  100% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.2); }
+}
+
+@keyframes borderPulse {
+  0% { border-color: rgba(76, 175, 80, 0.3); }
+  50% { border-color: rgba(76, 175, 80, 0.8); }
+  100% { border-color: rgba(76, 175, 80, 0.3); }
+}
+
 .animate-fadeIn {
-    animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .animate-fadeInUp {
-    animation: fadeInUp 0.4s ease-out;
+  animation: fadeInUp 0.4s ease-out;
 }
 
-.animate-fadeInDown {
-    animation: fadeInDown 0.3s ease-out;
+.animate-glow {
+  animation: glow 2s infinite;
 }
 
-.animate-pulse {
-    animation: pulse 2s infinite;
+/* ============ COMPONENTES FUTURISTAS ============ */
+
+/* Tarjetas con efecto vidrio futurista */
+.glass-card-futuristic {
+  background: rgba(10, 15, 10, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
 }
 
-.animate-slideIn {
-    animation: slideIn 0.3s ease-out;
+.glass-card-futuristic:hover {
+  border-color: rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.1);
 }
 
-.animate-slideInRight {
-    animation: slideInRight 0.3s ease-out;
+/* Botones con efecto neón */
+.btn-neon {
+  background: transparent;
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  transition: all 0.3s ease;
 }
 
-.animate-spin {
-    animation: spin 1s linear infinite;
+.btn-neon:hover {
+  background: var(--neon-green);
+  color: white;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
 }
 
-.animate-shimmer {
-    background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
+/* Inputs futuristas */
+.input-futuristic {
+  background: rgba(10, 15, 10, 0.6);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  color: white;
+  transition: all 0.3s ease;
 }
 
-/* Estilos de scroll personalizado */
+.input-futuristic:focus {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.2);
+  outline: none;
+}
+
+/* Scrollbar futurista */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #e0e0e0;
-    border-radius: 10px;
+  background: #1a1f1a;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--policia-verde);
-    border-radius: 10px;
+  background: linear-gradient(135deg, var(--neon-green), var(--neon-green-dark));
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--policia-verde-oscuro);
-}
-
-/* Clases utilitarias para Policía Nacional */
-.bg-policia {
-    background: linear-gradient(135deg, var(--policia-verde) 0%, var(--policia-verde-oscuro) 100%);
-}
-
-.bg-policia-card {
-    background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
-}
-
-.border-policia {
-    border-color: var(--policia-verde);
-}
-
-.text-policia {
-    color: var(--policia-verde);
-}
-
-.hover-bg-policia:hover {
-    background-color: var(--policia-verde);
-}
-
-.btn-policia {
-    background: linear-gradient(135deg, var(--policia-verde) 0%, var(--policia-verde-oscuro) 100%);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.btn-policia:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
-}
-
-.btn-policia:active {
-    transform: translateY(0);
-}
-
-.btn-danger {
-    background: linear-gradient(135deg, var(--policia-rojo) 0%, #b71c1c 100%);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.btn-danger:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
-}
-
-/* Badges de estado */
-.badge-abierto {
-    background-color: #FFC107;
-    color: #856404;
-}
-
-.badge-en-investigacion {
-    background-color: #17A2B8;
-    color: white;
-}
-
-.badge-cerrado {
-    background-color: #28A745;
-    color: white;
-}
-
-/* Skeleton loading */
-.skeleton {
-    background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 0.5rem;
-}
-
-/* Modal overlay */
-.modal-overlay {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-}
-
-/* Toast notifications */
-.toast-success {
-    background: #28A745;
-    color: white;
-}
-
-.toast-error {
-    background: #DC3545;
-    color: white;
-}
-
-.toast-warning {
-    background: #FFC107;
-    color: #856404;
-}
-
-.toast-info {
-    background: #17A2B8;
-    color: white;
-}
-
-/* Card hover effect */
-.card-hover {
-    transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-/* Responsive adjustments */
-@media (max-width: 640px) {
-    .mobile-stack {
-        flex-direction: column;
-    }
-    
-    .mobile-full {
-        width: 100%;
-    }
-    
-    .mobile-padding {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-    }
-}
-
-/* Focus styles para accesibilidad */
-*:focus {
-    outline: 2px solid var(--policia-verde);
-    outline-offset: 2px;
-}
-
-button:focus {
-    outline: 2px solid var(--policia-verde-claro);
-    outline-offset: 2px;
-}
-
-/* Estilos para impresión */
-@media print {
-    .no-print {
-        display: none;
-    }
-    
-    body {
-        background: white;
-    }
-    
-    .print-card {
-        break-inside: avoid;
-        box-shadow: none;
-        border: 1px solid #ddd;
-    }
+  background: var(--neon-green);
 }

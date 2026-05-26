@@ -1,3 +1,4 @@
+// frontend/src/components/EvidenciasUpload.jsx
 import React, { useState, useRef } from 'react';
 import { uploadFile } from '../services/uploadService';
 
@@ -6,8 +7,8 @@ function EvidenciasUpload({ onEvidenciasChange }) {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Validar tipos de archivo permitidos
-  const tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/quicktime'];
+  // Tipos de archivo permitidos
+  const tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/quicktime'];
   const maxSize = 50 * 1024 * 1024; // 50MB
 
   const handleFileSelect = async (e) => {
@@ -36,27 +37,55 @@ function EvidenciasUpload({ onEvidenciasChange }) {
 
     try {
       const uploadedEvidencias = [];
+      
       for (const file of nuevosArchivos) {
-        // Subir al backend
-        const result = await uploadFile(file);
-        uploadedEvidencias.push({
-          url: result.url,
+        // Crear una URL local para vista previa inmediata
+        const localUrl = URL.createObjectURL(file);
+        
+        // Mostrar vista previa mientras se sube
+        const evidenciaLocal = {
+          id: `temp_${Date.now()}_${file.name}`,
           nombre: file.name,
           tipo: file.type.startsWith('image') ? 'imagen' : 'video',
+          url: localUrl,
           tamano: file.size,
+          pendiente: true,
           fecha: new Date().toISOString()
-        });
-      }
+        };
+        
+        uploadedEvidencias.push(evidenciaLocal);
+        setEvidencias(prev => [...prev, evidenciaLocal]);
+        onEvidenciasChange([...evidencias, evidenciaLocal]);
 
-      const nuevasEvidencias = [...evidencias, ...uploadedEvidencias];
-      setEvidencias(nuevasEvidencias);
-      onEvidenciasChange(nuevasEvidencias);
+        // Subir al backend (en segundo plano)
+        try {
+          const result = await uploadFile(file);
+          if (result && result.url) {
+            // Reemplazar la URL local con la URL del servidor
+            setEvidencias(prev => prev.map(ev => 
+              ev.id === evidenciaLocal.id 
+                ? { ...ev, url: result.url, pendiente: false, serverUrl: result.url }
+                : ev
+            ));
+          }
+        } catch (uploadError) {
+          console.error('Error subiendo archivo:', uploadError);
+          // Mantener la URL local si falla la subida
+        }
+      }
+      
+      // Actualizar el estado final
+      setEvidencias(prev => {
+        const nuevas = [...prev];
+        onEvidenciasChange(nuevas);
+        return nuevas;
+      });
+      
     } catch (error) {
-      console.error('Error subiendo archivos:', error);
-      alert('Error al subir las evidencias');
+      console.error('Error procesando archivos:', error);
+      alert('Error al procesar las evidencias');
     } finally {
       setUploading(false);
-      // Limpiar input
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
@@ -72,16 +101,23 @@ function EvidenciasUpload({ onEvidenciasChange }) {
   };
 
   return (
-    <div className="bg-white rounded-lg p-4">
-      <div className="flex justify-between items-center mb-3">
-        <h3 className="font-semibold">Evidencias (fotos/videos)</h3>
+    <div className="bg-gray-50 rounded-lg p-3">
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="font-semibold text-sm">Evidencias (fotos/videos)</h3>
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"
+          className="bg-green-600 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-700 transition flex items-center gap-1"
         >
-          {uploading ? '⏳ Subiendo...' : '📎 Adjuntar'}
+          {uploading ? (
+            <>
+              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
+              Subiendo...
+            </>
+          ) : (
+            '📎 Adjuntar'
+          )}
         </button>
       </div>
 
@@ -96,43 +132,53 @@ function EvidenciasUpload({ onEvidenciasChange }) {
       />
 
       {/* Lista de evidencias */}
-      <div className="space-y-2">
-        {evidencias.map((ev, index) => (
-          <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-            <div className="flex items-center gap-2">
-              <span className="text-xl">{getIconoArchivo(ev.tipo)}</span>
-              <div className="flex-1">
-                <p className="text-sm font-medium truncate max-w-[150px]">{ev.nombre}</p>
-                <p className="text-xs text-gray-500">
-                  {(ev.tamano / 1024 / 1024).toFixed(1)} MB
-                </p>
+      <div className="space-y-2 max-h-40 overflow-y-auto">
+        {evidencias.length === 0 ? (
+          <p className="text-xs text-gray-400 text-center py-2">
+            No hay evidencias adjuntas
+          </p>
+        ) : (
+          evidencias.map((ev, index) => (
+            <div key={ev.id || index} className="flex items-center justify-between bg-white p-2 rounded border">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <span className="text-lg">{getIconoArchivo(ev.tipo)}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium truncate">{ev.nombre}</p>
+                  <p className="text-xs text-gray-400">
+                    {(ev.tamano / 1024 / 1024).toFixed(1)} MB
+                    {ev.pendiente && <span className="text-yellow-500 ml-1">(subiendo...)</span>}
+                  </p>
+                </div>
               </div>
+              <button
+                type="button"
+                onClick={() => eliminarEvidencia(index)}
+                className="text-red-500 text-lg ml-2"
+              >
+                ✕
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => eliminarEvidencia(index)}
-              className="text-red-500 text-xl"
-            >
-              ✕
-            </button>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Vista previa de imágenes */}
-      {evidencias.length > 0 && (
+      {evidencias.filter(e => e.tipo === 'imagen' && e.url).length > 0 && (
         <div className="mt-3 grid grid-cols-3 gap-2">
-          {evidencias.filter(e => e.tipo === 'imagen').slice(0, 3).map((ev, idx) => (
-            <div key={idx} className="relative aspect-square">
+          {evidencias.filter(e => e.tipo === 'imagen' && e.url).slice(0, 3).map((ev, idx) => (
+            <div key={idx} className="relative aspect-square bg-gray-200 rounded overflow-hidden">
               <img
                 src={ev.url}
                 alt="Evidencia"
-                className="w-full h-full object-cover rounded"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.src = 'https://placehold.co/100x100?text=Error';
+                }}
               />
             </div>
           ))}
-          {evidencias.filter(e => e.tipo === 'imagen').length > 3 && (
-            <div className="flex items-center justify-center bg-gray-200 rounded text-gray-500 text-sm">
+          {evidencias.filter(e => e.tipo === 'imagen' && e.url).length > 3 && (
+            <div className="flex items-center justify-center bg-gray-200 rounded text-gray-500 text-xs">
               +{evidencias.filter(e => e.tipo === 'imagen').length - 3}
             </div>
           )}

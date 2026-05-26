@@ -2,58 +2,54 @@
 import React from 'react';
 
 function StatsCards({ totalCasos, casosActivos, montoTotal }) {
-    const stats = [
-        {
-            titulo: 'Total Casos',
-            valor: totalCasos,
-            icono: '📋',
-            color: 'bg-gradient-to-br from-green-500 to-green-700',
-            bg: 'from-green-50 to-green-100',
-            textColor: 'text-green-700'
-        },
-        {
-            titulo: 'Casos Activos',
-            valor: casosActivos,
-            icono: '🟡',
-            color: 'bg-gradient-to-br from-yellow-500 to-yellow-700',
-            bg: 'from-yellow-50 to-yellow-100',
-            textColor: 'text-yellow-700'
-        },
-        {
-            titulo: 'Monto Perdido',
-            valor: `$${montoTotal.toLocaleString('es-CO')}`,
-            icono: '💰',
-            color: 'bg-gradient-to-br from-red-500 to-red-700',
-            bg: 'from-red-50 to-red-100',
-            textColor: 'text-red-700'
-        }
-    ];
+  // Validar que el monto sea un número
+  const montoValido = typeof montoTotal === 'number' && !isNaN(montoTotal) ? montoTotal : 0;
+  
+  const cards = [
+    { 
+      title: 'Total Casos', 
+      value: totalCasos, 
+      icon: '📊', 
+      gradient: 'from-green-500 to-green-700',
+      border: 'border-green-500/30'
+    },
+    { 
+      title: 'Casos Activos', 
+      value: casosActivos, 
+      icon: '⚠️', 
+      gradient: 'from-amber-500 to-amber-700',
+      border: 'border-amber-500/30'
+    },
+    { 
+      title: 'Monto Perdido', 
+      value: `$${montoValido.toLocaleString('es-CO')}`,
+      icon: '💰', 
+      gradient: 'from-red-500 to-red-700',
+      border: 'border-red-500/30'
+    }
+  ];
 
-    return (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
-            {stats.map((stat, index) => (
-                <div 
-                    key={index}
-                    className={`bg-gradient-to-br ${stat.bg} rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fadeIn`}
-                    style={{ animationDelay: `${index * 100}ms` }}
-                >
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <p className="text-gray-500 text-sm font-medium">{stat.titulo}</p>
-                            <p className={`text-2xl font-bold ${stat.textColor} mt-2`}>{stat.valor}</p>
-                        </div>
-                        <div className={`${stat.color} w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-md`}>
-                            {stat.icono}
-                        </div>
-                    </div>
-                    {/* Barra de progreso decorativa */}
-                    <div className="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
-                        <div className={`h-full ${stat.color.replace('bg-gradient-to-br', 'bg')} rounded-full`} style={{ width: '70%' }}></div>
-                    </div>
-                </div>
-            ))}
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {cards.map((card, idx) => (
+        <div 
+          key={idx} 
+          className={`glass-card-futuristic p-5 transition-all duration-300 hover:scale-[1.02] border-l-4 ${card.border} animate-fadeInUp`}
+          style={{ animationDelay: `${idx * 100}ms` }}
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-mono text-green-400 uppercase tracking-wider">{card.title}</p>
+              <p className="text-2xl font-bold text-white mt-2 font-mono">{card.value}</p>
+            </div>
+            <div className={`w-14 h-14 bg-gradient-to-br ${card.gradient} rounded-xl flex items-center justify-center shadow-lg animate-glow`}>
+              <span className="text-white text-2xl">{card.icon}</span>
+            </div>
+          </div>
         </div>
-    );
+      ))}
+    </div>
+  );
 }
 
 export default StatsCards;

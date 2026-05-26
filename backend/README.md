@@ -1,15 +1,37 @@
-# 🚔 CIBERPATRULLA API - Registro de Incidentes de Ciberseguridad
+# 🚔 CIBERPATRULLA - Sistema de Gestión de Incidentes de Ciberseguridad
+
+Aplicación Mobile First para la Policía Nacional de Colombia, diseñada para registrar y gestionar incidentes de ciberseguridad.
+
+## 📱 Características
+
+- Registro de incidentes de ciberdelitos
+- Carga de evidencias (fotos y videos)
+- Búsqueda avanzada y filtros
+- Modo offline con sincronización
+- Dashboard de estadísticas
+- Autenticación JWT
+- Diseño futurista con animaciones
+
+## 🛠️ Tecnologías
+
+### Backend
+- Node.js + Express
+- MongoDB con Mongoose
+- JWT para autenticación
+
+### Frontend
+- React.js + Vite
+- Tailwind CSS
+- Axios
 
 ## 📋 Requisitos previos
 
-- Node.js instalado (versión 14 o superior)
-- MongoDB Compass instalado y ejecutándose
-- MongoDB Compass con base de datos `Ciberpatrulla_DB`
+- Node.js (v18 o superior)
+- MongoDB Compass o MongoDB Atlas
 
-## 🔧 Instalación
+## 🚀 Instalación
 
-1. Clonar o descargar el repositorio
-2. Abrir terminal en la carpeta del proyecto
-3. Ejecutar:
+### 1. Clonar el repositorio
 ```bash
-npm install
+git clone https://github.com/TU-USUARIO/Ciberpatrulla_Movil.git
+cd Ciberpatrulla_Movil
