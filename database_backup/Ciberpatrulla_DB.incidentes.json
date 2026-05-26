@@ -1,0 +1,531 @@
+[{
+  "_id": {
+    "$oid": "69d46c35e461da07ee7e3329"
+  },
+  "incidente_id": "I001",
+  "funcionario_id": "F001",
+  "tipo_delito": "Estafa por SMS",
+  "fecha": "2026-03-15",
+  "victima": "Luis Fernando Gómez",
+  "monto_perdido": 2500000,
+  "estado": "En investigación",
+  "evidencias": [
+    "captura1.png",
+    "conversacion.pdf"
+  ],
+  "updatedAt": {
+    "$date": "2026-04-09T04:14:24.463Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69d46c41e461da07ee7e332b"
+  },
+  "incidente_id": "I002",
+  "funcionario_id": "F001",
+  "tipo_delito": "Suplantación de Identidad",
+  "fecha": "2026-03-16",
+  "victima": "Ana María Rodríguez",
+  "monto_perdido": 0,
+  "estado": "Abierto",
+  "evidencias": [
+    "perfil_falso.jpg"
+  ]
+},
+{
+  "_id": {
+    "$oid": "69d7263f4a7fa73ef595e36a"
+  },
+  "incidente_id": "I003",
+  "funcionario_id": "F001",
+  "tipo_delito": "Estafa por SMS",
+  "fecha_incidente": "2026-04-08",
+  "hora_incidente": "14:30",
+  "descripcion": "Víctima recibió un SMS falso de Bancolombia indicando que su cuenta estaba bloqueada",
+  "victima": {
+    "nombre": "Luis Fernando Gómez",
+    "identificacion": "80223344",
+    "telefono": "3214567890",
+    "correo": "luis.gomez@email.com"
+  },
+  "afectacion_economica": {
+    "monto_perdido": 2500000,
+    "moneda": "COP",
+    "entidad_afectada": "Bancolombia"
+  },
+  "evidencias": [],
+  "estado": "Abierto",
+  "sincronizado": true,
+  "createdAt": {
+    "$date": "2026-04-09T04:08:31.120Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-09T04:08:31.120Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dda66ccdfb44e495d47440"
+  },
+  "incidente_id": "I004",
+  "funcionario_id": "F001",
+  "tipo_delito": "Clonación de tarjeta",
+  "fecha_incidente": "2026-04-13",
+  "descripcion": "el dia 13/04/2026 me llega un mensaje donde al parecer me clonaron la tarjeta debido, teniendo en cuenta la notificacion que me llega al correo electronico, desconociendo quien esta realizando dichas transacciones, por esa razon bloquee mis tarjetas. ",
+  "victima": {
+    "nombre": "CARLOS COLLAZOS",
+    "identificacion": "76213546",
+    "telefono": "123456"
+  },
+  "afectacion_economica": {
+    "monto_perdido": 750,
+    "moneda": "COP"
+  },
+  "evidencias": [],
+  "estado": "Abierto",
+  "sincronizado": true,
+  "createdAt": {
+    "$date": "2026-04-14T02:29:00.853Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-14T02:29:00.853Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e6ccc3671aad5ff51811d8"
+  },
+  "incidente_id": "I010",
+  "funcionario_id": "F003",
+  "tipo_delito_id": "TD001",
+  "fecha_incidente": {
+    "$date": "2026-04-20T00:00:00.000Z"
+  },
+  "hora_incidente": "14:30",
+  "descripcion": "Víctima recibió SMS falso de Bancolombia solicitando sus datos",
+  "victima": {
+    "nombre": "Pedro González",
+    "identificacion": "80223344",
+    "telefono": "3214567890",
+    "correo": "pedro.gonzalez@email.com",
+    "_id": {
+      "$oid": "69e6ccc3671aad5ff51811d9"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 2500000,
+    "moneda": "COP",
+    "entidad_afectada": "Bancolombia",
+    "_id": {
+      "$oid": "69e6ccc3671aad5ff51811da"
+    }
+  },
+  "evidencias_url": [],
+  "estado": "En investigación",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-04-21T01:02:59.293Z"
+  },
+  "createdAt": {
+    "$date": "2026-04-21T01:02:59.297Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-11T03:20:03.552Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e6ccdb671aad5ff51811e2"
+  },
+  "incidente_id": "I0150",
+  "funcionario_id": "F003",
+  "tipo_delito_id": "TD001",
+  "fecha_incidente": {
+    "$date": "2026-04-20T00:00:00.000Z"
+  },
+  "hora_incidente": "14:30",
+  "descripcion": "Víctima recibió SMS falso de Bancolombia solicitando sus datos",
+  "victima": {
+    "nombre": "Pedro González",
+    "identificacion": "80223344",
+    "telefono": "3214567890",
+    "correo": "pedro.gonzalez@email.com",
+    "_id": {
+      "$oid": "69e6ccdb671aad5ff51811e3"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 2500000,
+    "moneda": "COP",
+    "entidad_afectada": "Bancolombia",
+    "_id": {
+      "$oid": "69e6ccdb671aad5ff51811e4"
+    }
+  },
+  "evidencias_url": [],
+  "estado": "Abierto",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-04-21T01:03:23.852Z"
+  },
+  "createdAt": {
+    "$date": "2026-04-21T01:03:23.853Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-21T01:03:23.853Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e6dbd0671aad5ff5181207"
+  },
+  "incidente_id": "I020",
+  "funcionario_id": "F005",
+  "tipo_delito_id": "TD001",
+  "fecha_incidente": {
+    "$date": "2026-04-20T00:00:00.000Z"
+  },
+  "hora_incidente": "10:30",
+  "descripcion": "Estafa por SMS - Víctima perdió $500.000",
+  "victima": {
+    "nombre": "María Rodríguez",
+    "identificacion": "52345678",
+    "telefono": "3214567890",
+    "_id": {
+      "$oid": "69e6dbd0671aad5ff5181208"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 500000,
+    "moneda": "COP",
+    "_id": {
+      "$oid": "69e6dbd0671aad5ff5181209"
+    }
+  },
+  "evidencias_url": [],
+  "estado": "Abierto",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-04-21T02:07:12.071Z"
+  },
+  "createdAt": {
+    "$date": "2026-04-21T02:07:12.073Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-21T02:07:12.073Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e6e02a671aad5ff518121a"
+  },
+  "incidente_id": "I0200",
+  "funcionario_id": "F035",
+  "tipo_delito_id": "TD003",
+  "fecha_incidente": {
+    "$date": "2026-04-20T00:00:00.000Z"
+  },
+  "hora_incidente": "18:30",
+  "descripcion": "Se está rastreando el número de teléfono origen del SMS fraudulento",
+  "victima": {
+    "nombre": "carlos ruiz",
+    "identificacion": "76302321",
+    "telefono": "321123123123",
+    "correo": "carlos.ruiz@email.com",
+    "_id": {
+      "$oid": "69e6e02a671aad5ff518121b"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 5500000,
+    "moneda": "COP",
+    "entidad_afectada": "Banpopular",
+    "_id": {
+      "$oid": "69e6e02a671aad5ff518121c"
+    }
+  },
+  "evidencias_url": [],
+  "estado": "Abierto",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-04-21T02:25:46.927Z"
+  },
+  "createdAt": {
+    "$date": "2026-04-21T02:25:46.930Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-11T03:21:00.749Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a0160418b871d397cb65b90"
+  },
+  "incidente_id": "I1778474921565",
+  "funcionario_id": "F025",
+  "tipo_delito_id": "TD006",
+  "fecha_incidente": {
+    "$date": "2026-05-11T00:00:00.000Z"
+  },
+  "hora_incidente": "23:48",
+  "descripcion": "me enviaron un link a mi celular para pagar el cargo fijo de mi plan de celular, al momento de abrirlo perdio totalmente el control de sus cuentas. ",
+  "victima": {
+    "nombre": "Sara Uribe",
+    "identificacion": "123456643",
+    "telefono": "3223435434",
+    "correo": "sara@uniautonoma.edu.co",
+    "_id": {
+      "$oid": "6a0160418b871d397cb65b91"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 2000000,
+    "moneda": "COP",
+    "entidad_afectada": "",
+    "_id": {
+      "$oid": "6a0160418b871d397cb65b92"
+    }
+  },
+  "evidencias_url": [],
+  "estado": "Cerrado",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-05-11T04:51:13.894Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-11T04:51:13.900Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-12T01:13:06.082Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a02803dafcdc70cd5662076"
+  },
+  "incidente_id": "I1778548404756",
+  "funcionario_id": "F025",
+  "tipo_delito_id": "TD002",
+  "fecha_incidente": {
+    "$date": "2026-05-12T00:00:00.000Z"
+  },
+  "hora_incidente": "20:13",
+  "descripcion": "Me llega un mensaje de texto con un link que al momento de abrirlo me llevo a una pagina de internet similar a la del operador telefonico claro, donde me ofrecian pagar mi factura con un 50% de descuento, al ingresar a realizar el pago, me llevo a la pagina de nequi y proceso a realizar el pago, pero posteriormente me doy cuenta que se sacaron un total de 600.000 mil pesos de la cuenta. ",
+  "victima": {
+    "nombre": "JUAN JOSE COLLAZOS",
+    "identificacion": "1166456789",
+    "telefono": "3128528528",
+    "correo": "JUANJOSE@GMAIL.COM",
+    "_id": {
+      "$oid": "6a02803dafcdc70cd5662077"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 600,
+    "moneda": "COP",
+    "entidad_afectada": "Nequi Bancolombia",
+    "_id": {
+      "$oid": "6a02803dafcdc70cd5662078"
+    }
+  },
+  "evidencias_url": [
+    "temp_1778548788942_nequi.png"
+  ],
+  "estado": "En investigación",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-05-12T01:19:57.764Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-12T01:19:57.773Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-12T02:29:49.251Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a1480db9e791a73cc12e012"
+  },
+  "incidente_id": "I1779728494928",
+  "funcionario_id": "F025",
+  "tipo_delito_id": "TD002",
+  "fecha_incidente": {
+    "$date": "2026-05-25T00:00:00.000Z"
+  },
+  "hora_incidente": "12:01",
+  "descripcion": "mensaje de prueba",
+  "victima": {
+    "nombre": "DEYANIRA ROSALES",
+    "identificacion": "34557887",
+    "telefono": "3128338526",
+    "correo": "deyanira@gmail.com",
+    "_id": {
+      "$oid": "6a1480db9e791a73cc12e013"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 500000,
+    "moneda": "COP",
+    "entidad_afectada": "Banco Popular",
+    "_id": {
+      "$oid": "6a1480db9e791a73cc12e014"
+    }
+  },
+  "evidencias_url": [
+    "http://localhost:3000/uploads/evidencia-1779728601185-56043248.png"
+  ],
+  "estado": "En investigación",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-05-25T17:03:23.580Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-25T17:03:23.586Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-25T21:57:38.768Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a14f696ecff0f60520255b8"
+  },
+  "incidente_id": "I1779758145423",
+  "funcionario_id": "F002",
+  "tipo_delito_id": "TD003",
+  "fecha_incidente": {
+    "$date": "2026-05-26T00:00:00.000Z"
+  },
+  "hora_incidente": "20:15",
+  "descripcion": "Me llego un mensaje de correo electrónico donde se hicieron pasar por el banco Davivienda donde tengo una cuenta de ahorro, me enviaron un link para descargar el extracto de la cuenta, pero al ingresar me sustrajeron los datos personales y bancarios. ",
+  "victima": {
+    "nombre": "RAUL JOSE",
+    "identificacion": "1061001002",
+    "telefono": "8351526",
+    "correo": "raul@gmail.com",
+    "_id": {
+      "$oid": "6a14f696ecff0f60520255b9"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 650000,
+    "moneda": "COP",
+    "entidad_afectada": "Banco Davivienda",
+    "_id": {
+      "$oid": "6a14f696ecff0f60520255ba"
+    }
+  },
+  "evidencias_url": [
+    "http://localhost:3000/uploads/evidencia-1779758737056-256622212.webp"
+  ],
+  "estado": "Abierto",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-05-26T01:25:42.248Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-26T01:25:42.358Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-26T01:25:42.358Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a14fdc0ecff0f60520255eb"
+  },
+  "incidente_id": "I1779760549806",
+  "funcionario_id": "F003",
+  "tipo_delito_id": "TD002",
+  "fecha_incidente": {
+    "$date": "2026-05-26T00:00:00.000Z"
+  },
+  "hora_incidente": "20:55",
+  "descripcion": "lo violaron",
+  "victima": {
+    "nombre": "RAUL JOSE",
+    "identificacion": "1061001002",
+    "telefono": "8351526",
+    "correo": "raul@gmail.com",
+    "_id": {
+      "$oid": "6a14fdc0ecff0f60520255ec"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 5500000,
+    "moneda": "COP",
+    "entidad_afectada": "Banco Davivienda",
+    "_id": {
+      "$oid": "6a14fdc0ecff0f60520255ed"
+    }
+  },
+  "evidencias_url": [],
+  "estado": "Abierto",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-05-26T01:56:16.369Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-26T01:56:16.376Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-26T01:56:16.376Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a15085eecff0f605202561a"
+  },
+  "incidente_id": "I1779763186459",
+  "funcionario_id": "F002",
+  "tipo_delito_id": "TD001",
+  "fecha_incidente": {
+    "$date": "2026-05-26T00:00:00.000Z"
+  },
+  "hora_incidente": "21:39",
+  "descripcion": "informacion de prueba para la presentacion de la aplicacion",
+  "victima": {
+    "nombre": "ANDRES PALTA",
+    "identificacion": "12345666",
+    "telefono": "321654987",
+    "correo": "andres@hotmail.com",
+    "_id": {
+      "$oid": "6a15085eecff0f605202561b"
+    }
+  },
+  "afectacion_economica": {
+    "monto_perdido": 450,
+    "moneda": "COP",
+    "entidad_afectada": "Banco avevillas ",
+    "_id": {
+      "$oid": "6a15085eecff0f605202561c"
+    }
+  },
+  "evidencias_url": [
+    "http://localhost:3000/uploads/evidencia-1779763290455-636860356.jpg"
+  ],
+  "estado": "Abierto",
+  "sincronizado": true,
+  "fecha_registro": {
+    "$date": "2026-05-26T02:41:34.746Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-26T02:41:34.762Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-26T02:41:34.762Z"
+  },
+  "__v": 0
+}]

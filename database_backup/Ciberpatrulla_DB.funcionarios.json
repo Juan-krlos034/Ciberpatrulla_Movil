@@ -1,0 +1,76 @@
+[{
+  "_id": {
+    "$oid": "6a14ad51d198d7364cab6f9c"
+  },
+  "funcionario_id": "F001",
+  "identificacion": "80123456",
+  "nombre": "Juan Pérez",
+  "rango": "Patrullero",
+  "unidad": "SIJIN",
+  "email": "juan.perez@policia.gov.co",
+  "password": "$2a$10$9X9X9X9X9X9X9X9X9X9X9u",
+  "telefono": "3001234567",
+  "rol": "usuario",
+  "activo": true,
+  "fecha_registro": {
+    "$date": "2026-05-25T20:13:05.276Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a14b8aaa74af01f4e4cb167"
+  },
+  "funcionario_id": "F002",
+  "identificacion": "1061705951",
+  "nombre": "Luna Angelica Pulgarin",
+  "rango": "Oficial",
+  "unidad": "SIJIN",
+  "email": "luna@policia.gov.co",
+  "password": "$2a$10$o/5crd.6XvTCUGb9tURjMuJn8yjRDhGracvzU8o9fezYnkqxdK5P6",
+  "telefono": "3128338526",
+  "foto_url": "http://localhost:3000/uploads/perfiles/perfil-F002-1779744767745.jpg",
+  "rol": "usuario",
+  "activo": true,
+  "ultimo_acceso": {
+    "$date": "2026-05-26T02:37:45.192Z"
+  },
+  "fecha_registro": {
+    "$date": "2026-05-25T21:01:30.407Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-25T21:01:30.441Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-26T02:37:45.193Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a14fd7becff0f60520255da"
+  },
+  "funcionario_id": "F003",
+  "identificacion": "1061705959",
+  "nombre": "Luna Angelica Pulgarin",
+  "rango": "Patrullero",
+  "unidad": "SIJIN",
+  "email": "luna@poli1cia.gov.co",
+  "password": "$2a$10$BbLnX0Ryl1xlSgzBF8O31OsIk/.BwoCYzANKWr.YGUMUe39LQYIzu",
+  "telefono": "3128338526",
+  "foto_url": "http://localhost:3000/uploads/perfiles/perfil-F003-1779761049922.jpg",
+  "rol": "usuario",
+  "activo": true,
+  "ultimo_acceso": {
+    "$date": "2026-05-26T01:55:37.363Z"
+  },
+  "fecha_registro": {
+    "$date": "2026-05-26T01:55:07.423Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-26T01:55:07.434Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-26T02:04:09.984Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,64 @@
+[{
+  "_id": {
+    "$oid": "69d46bc4e461da07ee7e331d"
+  },
+  "tipo_id": "TD001",
+  "nombre": "Estafa por SMS",
+  "descripcion": "Mensajes de texto fraudulentos que suplantan entidades bancarias"
+},
+{
+  "_id": {
+    "$oid": "69d46be1e461da07ee7e331f"
+  },
+  "tipo_id": "TD002",
+  "nombre": "Suplantación de Identidad",
+  "descripcion": "Robo de datos personales para hacerse pasar por la víctima"
+},
+{
+  "_id": {
+    "$oid": "69d46befe461da07ee7e3321"
+  },
+  "tipo_id": "TD003",
+  "nombre": "Ciberacoso",
+  "descripcion": "Hostigamiento a través de redes sociales o plataformas digitales"
+},
+{
+  "_id": {
+    "$oid": "6a0157f537e2a9ebacab0286"
+  },
+  "tipo_delito_id": "TD001",
+  "nombre": "Estafa por SMS",
+  "activo": true
+},
+{
+  "_id": {
+    "$oid": "6a0157f537e2a9ebacab0287"
+  },
+  "tipo_delito_id": "TD002",
+  "nombre": "Suplantación de identidad",
+  "activo": true
+},
+{
+  "_id": {
+    "$oid": "6a0157f537e2a9ebacab0288"
+  },
+  "tipo_delito_id": "TD003",
+  "nombre": "Phishing",
+  "activo": true
+},
+{
+  "_id": {
+    "$oid": "6a0157f537e2a9ebacab0289"
+  },
+  "tipo_delito_id": "TD004",
+  "nombre": "Ciberacoso",
+  "activo": true
+},
+{
+  "_id": {
+    "$oid": "6a0157f537e2a9ebacab028a"
+  },
+  "tipo_delito_id": "TD005",
+  "nombre": "Clonación de tarjeta",
+  "activo": true
+}]
